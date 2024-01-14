@@ -4,7 +4,7 @@ import { Sequelize } from 'sequelize';
 const dbConfig = {
     host: process.env.DB_HOST ?? 'localhost',
     user: process.env.DB_USER ?? 'root',
-    password: process.env.DB_PASSWORD ?? 'c5lus9tering',
+    password: process.env.DB_PASSWORD ?? '',
     database: process.env.DB_NAME ?? 'n_server',
     port: process.env.DB_PORT?? 3306,
 };
