@@ -1,10 +1,8 @@
 import http from 'http';
 import app from './app';
 import {connectToDatabase, sequelize} from './config/database';
-import {initProduct} from "./models/Product";
-import {initUser} from "./models/User";
 
-const PORT = process.env.PORT || 3000;
+const PORT = process.env.PORT ?? 3000;
 
 // Connect to the database using Sequelize
 connectToDatabase()
@@ -13,11 +11,11 @@ connectToDatabase()
 
         server.listen(PORT, () => {
             console.log(`Server is running on http://localhost:${PORT}`);
-        });
 
-        // Initialize models
-        initProduct(sequelize);
-        initUser(sequelize);
+            sequelize.query("show tables").then((result) => console.log(result));
+            console.log('Models initialized');
+
+        });
 
     })
     .catch((error) => {
