@@ -1,19 +1,13 @@
 
 import { Sequelize } from 'sequelize';
+import environment from "./environment";
 
-const dbConfig = {
-    host: process.env.DB_HOST ?? 'localhost',
-    user: process.env.DB_USER ?? 'root',
-    password: process.env.DB_PASSWORD ?? '',
-    database: process.env.DB_NAME ?? 'n_server',
-    port: process.env.DB_PORT?? 3306,
-};
-export const sequelize = new Sequelize(dbConfig.database, dbConfig.user, dbConfig.password, {
-    host: dbConfig.host,
+export const sequelize = new Sequelize(environment.DB_NAME, environment.DB_USER, environment.DB_PASSWORD, {
+    host: environment.DB_HOST,
     dialect: 'mysql',
     logging: true,
     sync: { force: true, alter: true },
-    port: dbConfig.port as number,
+    port: environment.DB_PORT as number,
     pool: {
         max: 5,
         min: 0,
