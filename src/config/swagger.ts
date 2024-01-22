@@ -9,7 +9,17 @@ const options: Options = {
             description: 'API documentation using Swagger',
         },
     },
-    apis: ['./src/routes/*.ts'],
+    schemes: ['http', 'https'],
+    securityDefinitions: {
+        JWT: {
+            type: 'apiKey',
+            in: 'header',
+            name: 'Authorization',
+            description: "",
+        }
+    },
+    basedir: __dirname,
+    apis: ['./src/routes/*.ts', './src/routes/*.js'],
 
 };
 
