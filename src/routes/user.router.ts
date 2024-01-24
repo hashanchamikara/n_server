@@ -5,15 +5,23 @@ const userRouter = express.Router();
 
 const userController = new UserController();
 
+/**
+ * @swagger
+ * tags:
+ *   name: Users
+ *   description: Operations related to users
+ */
+
+
 
 /**
  * @swagger
- * /users:
+ * /users/search:
  *   post:
  *     summary: Create a new user with pagination, filtering, and sorting options
  *     description: Create a new user with optional pagination, filtering, and sorting options.
+ *     tags: [Users]
  *     requestBody:
- *       required: true
  *       content:
  *         application/json:
  *           schema:
@@ -38,14 +46,14 @@ const userController = new UserController();
  *                       description: The field to filter on.
  *                     operator:
  *                       type: string
- *                       description: The comparison operator (eq, gt, lt, etc.).
+ *                       description: The comparison operator (eq, gt, lt, like).
  *                     value:
  *                       type: string
  *                       description: The value to filter on.
  *                   example:
- *                     field: name
- *                     operator: eq
- *                     value: John
+ *                     field: email
+ *                     operator: like
+ *                     value: '%example.com'
  *               sort:
  *                 type: array
  *                 items:
@@ -58,24 +66,18 @@ const userController = new UserController();
  *                       type: string
  *                       description: The sorting direction (asc or desc).
  *                   example:
- *                     field: createdAt
+ *                     field: id
  *                     direction: desc
  *             example:
  *               page: 1
  *               size: 10
- *               direction: asc
  *               filter:
- *                 - field: name
- *                   operator: eq
- *                   value: John
- *                 - field: age
- *                   operator: gt
- *                   value: '25'
+ *                 - field: email
+ *                   operator: like
+ *                   value: '%example.com'
  *               sort:
- *                 - field: createdAt
+ *                 - field: id
  *                   direction: desc
- *                 - field: name
- *                   direction: asc
  *     responses:
  *       '200':
  *         description: Successful response
@@ -97,7 +99,7 @@ const userController = new UserController();
  *             example:
  *               error: 'Internal server error'
  */
-userRouter.post('/', (req: Request, res: Response, next: NextFunction) => {
+userRouter.post('/search', (req: Request, res: Response, next: NextFunction) => {
     next();
 }, userController.findAll);
 
@@ -108,6 +110,7 @@ userRouter.post('/', (req: Request, res: Response, next: NextFunction) => {
  *   get:
  *     summary: Get user by ID
  *     description: Retrieve a user by their ID.
+ *     tags: [Users]
  *     parameters:
  *       - in: path
  *         name: id
@@ -137,6 +140,7 @@ userRouter.get('/:id', (req: Request, res: Response, next: NextFunction) => {
  *   post:
  *     summary: Create a new user
  *     description: Create a new user with the provided attributes.
+ *     tags: [Users]
  *     requestBody:
  *       required: true
  *       content:
