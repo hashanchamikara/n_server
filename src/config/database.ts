@@ -6,7 +6,7 @@ import logger from "./logger";
 export const sequelize = new Sequelize(environment.DB_NAME, environment.DB_USER, environment.DB_PASSWORD, {
     host: environment.DB_HOST,
     dialect: 'mysql',
-    logging: true,
+    logging: msg => logger.debug(msg),
     sync: { force: true, alter: true },
     port: environment.DB_PORT as number,
     pool: {

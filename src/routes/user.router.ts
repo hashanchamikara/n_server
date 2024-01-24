@@ -1,9 +1,7 @@
 import express, {NextFunction, Request, Response} from "express";
-import {UserController} from '../controllers/user.controller';
+import userController from '../controllers/user.controller';
 
 const userRouter = express.Router();
-
-const userController = new UserController();
 
 /**
  * @swagger

@@ -1,4 +1,6 @@
 import winston from 'winston';
+import environment from "./environment";
+import morgan from "morgan";
 
 
 const logLevels = {
@@ -23,7 +25,7 @@ const logger = winston.createLogger({
     ),
     transports: [
         new winston.transports.Console({
-            level: 'debug',
+            level: environment.ENV === 'development' ? 'debug' : 'info',
             format: winston.format.combine(
                 winston.format.splat(),
                 winston.format.colorize({all: true})
@@ -42,3 +44,18 @@ const logger = winston.createLogger({
 winston.addColors(logColors);
 
 export default logger;
+
+const requestLogger = morgan(':remote-addr :url :method HTTP/:http-version :user-agent',
+    {
+        immediate: true,
+        stream: {
+            write: (message) => logger.info(`[REQUEST] ${message.trim()}`)
+        }});
+
+const responseLogger = morgan(':remote-addr :url :method :status :res[content-length] :response-time ms',
+    {
+        stream: {
+            write: (message) => logger.info(`[RESPONSE] ${message.trim()}`)
+        }});
+
+export {requestLogger, responseLogger};

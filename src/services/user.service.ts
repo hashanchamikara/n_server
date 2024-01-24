@@ -1,19 +1,8 @@
 import UserModel from "../models/user.model";
 import {UserDto} from "../dtos/user.dto";
-import {Op} from "sequelize";
 import logger from "../config/logger";
 
-export class UserService {
-
-    private static instance: UserService;
-
-    static getInstance(): UserService {
-        if (!UserService.instance) {
-            UserService.instance = new UserService();
-        }
-        return this.instance;
-    }
-
+class UserService {
     async getUserById(userId: number): Promise<any> {
         return UserModel.findOne<UserModel>({where: {id: userId}});
     }
@@ -39,3 +28,5 @@ export class UserService {
     }
 
 }
+const userService = new UserService();
+export default userService;

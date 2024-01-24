@@ -1,14 +1,14 @@
 import {Request, Response} from 'express';
-import {UserService} from '../services/user.service';
+import userService from '../services/user.service';
 import {UserDto} from "../dtos/user.dto";
 import logger from "../config/logger";
 
-export class UserController {
+class UserController {
 
     getUserById(req: Request, res: Response): void {
         const userId = Number(req.params.id);
 
-        UserService.getInstance().getUserById(userId)
+        userService.getUserById(userId)
             .then((user) => {
                 if (user) {
                     res.status(200).json({ user });
@@ -25,7 +25,7 @@ export class UserController {
 
     findAll(req: Request, res: Response): void {
         const pageRequest = req.body as PageRequest;
-        UserService.getInstance().findAll(pageRequest)
+        userService.findAll(pageRequest)
             .then((users) => {
                 res.status(200).json({ users });
             })
@@ -38,7 +38,7 @@ export class UserController {
 
     createUser(req: Request, res: Response): void {
         const user = req.body as UserDto;
-        UserService.getInstance().createUser(user)
+        userService.createUser(user)
             .then((user) => {
                 res.status(200).json({ user });
             })
@@ -48,3 +48,6 @@ export class UserController {
             });
     }
 }
+
+const userController = new UserController();
+export default userController;
