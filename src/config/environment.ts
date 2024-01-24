@@ -1,4 +1,5 @@
 import dotenv from 'dotenv';
+import logger from "./logger";
 
 dotenv.config(); // Load environment variables from .env file
 
@@ -11,5 +12,5 @@ const environment = {
     DB_NAME: process.env.DB_NAME ?? '',
 };
 
-console.log('Environment variables: ', environment)
+logger.debug('Environment variables: ', environment)
 export default environment;

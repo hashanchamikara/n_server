@@ -1,5 +1,7 @@
 import UserModel from "../models/user.model";
 import {UserDto} from "../dtos/user.dto";
+import {Op} from "sequelize";
+import logger from "../config/logger";
 
 export class UserService {
 
@@ -13,23 +15,27 @@ export class UserService {
     }
 
     async getUserById(userId: number): Promise<any> {
-        return UserModel.findOne<UserModel>({ where: { id: userId } });
+        return UserModel.findOne<UserModel>({where: {id: userId}});
     }
 
-    async findAll(): Promise<UserModel[]> {
+    async findAll(pageRequest: PageRequest): Promise<PageResponse<UserModel>> {
         return UserModel
-            .findAll<UserModel>();
+            .paginate<UserModel>(pageRequest);
+    }
+
+    async search(page: PageRequest): Promise<PageResponse<UserModel>> {
+        return UserModel
+            .paginate<UserModel>(page);
     }
 
     async createUser(user: UserDto): Promise<UserModel> {
-        console.log("User: ", user);
-        const object = await UserModel.create({
+        const userModel = await UserModel.create({
             username: user.username,
             email: user.email,
             password: user.password
         });
-        console.log("Object: ", object);
-        return object;
+        logger.debug("Object: ", userModel);
+        return userModel;
     }
 
 }

@@ -1,6 +1,7 @@
 import {Request, Response} from 'express';
 import {UserService} from '../services/user.service';
 import {UserDto} from "../dtos/user.dto";
+import logger from "../config/logger";
 
 export class UserController {
 
@@ -16,20 +17,20 @@ export class UserController {
                 }
             })
             .catch((error) => {
-                console.error('Error fetching user:', error);
+                logger.error('Error fetching user:', error);
                 res.status(500).json({ message: 'Internal server error' });
             });
     }
 
 
     findAll(req: Request, res: Response): void {
-
-        UserService.getInstance().findAll()
+        const pageRequest = req.body as PageRequest;
+        UserService.getInstance().findAll(pageRequest)
             .then((users) => {
                 res.status(200).json({ users });
             })
             .catch((error) => {
-                console.error('Error fetching user:', error);
+                logger.error('Error fetching user:', error);
                 res.status(500).json({ message: 'Internal server error' });
             });
     }
@@ -42,7 +43,7 @@ export class UserController {
                 res.status(200).json({ user });
             })
             .catch((error) => {
-                console.error('Error creating user:', error);
+                logger.error('Error creating user:', error);
                 res.status(500).json({ message: 'Internal server error' });
             });
     }

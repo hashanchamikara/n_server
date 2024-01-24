@@ -12,7 +12,7 @@ const app = express();
 
 app.use(cors());
 app.use(json());
-app.use(morgan('dev'));
+app.use(morgan('combined'));
 
 // api-docs route
 app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(specs));
